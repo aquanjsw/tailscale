@@ -72,6 +72,9 @@ func defaultTunName() string {
 	case "openbsd":
 		return "tun"
 	case "windows":
+		if s := envknob.String("TUN"); s != "" {
+			return s
+		}
 		return "Tailscale"
 	case "darwin":
 		// "utun" is recognized by wireguard-go/tun/tun_darwin.go
