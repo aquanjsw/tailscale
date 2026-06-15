@@ -17,6 +17,7 @@ import (
 	"net/http/httputil"
 	"strings"
 
+	"tailscale.com/envknob"
 	"tailscale.com/feature"
 	"tailscale.com/net/proxymux"
 	"tailscale.com/net/socks5"
@@ -30,7 +31,8 @@ func init() {
 }
 
 func registerOutboundProxyFlags() {
-	flag.StringVar(&args.socksAddr, "socks5-server", "", `optional [ip]:port to run a SOCK5 server (e.g. "localhost:1080")`)
+	defaultSocks5Server := envknob.RegisterString("SOCKS5_SERVER")
+	flag.StringVar(&args.socksAddr, "socks5-server", defaultSocks5Server(), `optional [ip]:port to run a SOCK5 server (e.g. "localhost:1080")`)
 	flag.StringVar(&args.httpProxyAddr, "outbound-http-proxy-listen", "", `optional [ip]:port to run an outbound HTTP proxy (e.g. "localhost:8080")`)
 }
 
